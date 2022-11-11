@@ -252,7 +252,27 @@ func editMahasiswa(w http.ResponseWriter, r *http.Request) {
 }
 
 func hapusMahasiswa(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "hapus mahasiswa")
+	// Saat form edit mahasiswa di-submit
+	if r.Method == "GET" {
+		// mengambil data dari form
+		nim := r.FormValue("nim")
+
+		var newDataValue Data
+
+		// periksa semua data mahasiswa satu persatu
+		for _, mhs := range dataValue.DataMahasiswa {
+			// cari mahasiswa dengan nim yang sesuai
+			if mhs.Nim != nim {
+				// tambahkan data tiap mahasiswa (kecuali yang nimnya sama dengan yang ingin dihapus) ke variabel penampung
+				newDataValue.DataMahasiswa = append(newDataValue.DataMahasiswa, mhs)
+			}
+		}
+		// ubah isi DataMahasiswa di storage utama dengan data yang ada di variabel mahasiswa sementara
+		dataValue.DataMahasiswa = newDataValue.DataMahasiswa
+
+		// Redirect ke halaman index
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
