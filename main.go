@@ -4,10 +4,13 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
+
+	"github.com/joho/godotenv"
 )
 
 type Mahasiswa struct {
@@ -39,8 +42,15 @@ func main() {
 	http.HandleFunc("/login", login)
 	http.HandleFunc("/logout", logout)
 
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	PORT := os.Getenv("PORT")
+
 	server := new(http.Server)
-	server.Addr = ":"
+	server.Addr = ":" + PORT
 
 	fmt.Printf("Server running on http://localhost:%s\n", server.Addr)
 	server.ListenAndServe()
