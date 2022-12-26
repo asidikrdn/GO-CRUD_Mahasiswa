@@ -40,7 +40,7 @@ func main() {
 	http.HandleFunc("/logout", logout)
 
 	server := new(http.Server)
-	server.Addr = ":4135"
+	server.Addr = ":"
 
 	fmt.Printf("Server running on http://localhost:%s\n", server.Addr)
 	server.ListenAndServe()
